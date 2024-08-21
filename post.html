@@ -3,10 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
+    <title>Visualização do Post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #e74c3c;
+        }
+
+        #post-content h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        #post-content p {
+            line-height: 1.6;
+        }
+
+        #not-found-message {
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="container">
+        <div id="post-content">
+            <!-- O conteúdo do post será inserido aqui -->
+        </div>
+        <div id="not-found-message" style="display: none;">
+            <h2>Conteúdo Não Encontrado</h2>
+            <p>O post que você está tentando acessar não está disponível.</p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+            const post = posts.find(post => post.id === postId);
+
+            const postContentElement = document.getElementById('post-content');
+            const notFoundMessageElement = document.getElementById('not-found-message');
+
+            if (post) {
+                postContentElement.innerHTML = `
+                    <h2>${post.title}</h2>
+                    <p>${post.content}</p>
+                `;
+                notFoundMessageElement.style.display = 'none';
+            } else {
+                postContentElement.style.display = 'none';
+                notFoundMessageElement.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
